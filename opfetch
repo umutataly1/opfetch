@@ -1,0 +1,202 @@
+#!/bin/bash
+source /etc/os-release
+
+if [ -n "$1" ]; then
+	ID="$1"
+fi
+
+NC="\033[0m"
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+WHITE="\033[37m"
+BRED="\033[1;31m"
+BGREEN="\033[1;32m"
+BYELLOW="\033[1;33m"
+BBLUE="\033[1;34m"
+BPURPLE="\033[1;35m"
+BCYAN="\033[1;36m"
+BWHITE="\033[1;37m"
+
+ARCH="$(uname -m)"
+if [ -z "${USER}" ]; then
+	SUSER="(none)"
+else
+	SUSER="${USER}"
+fi
+if [ -z "${HOSTNAME}" ]; then
+	HOST="(none)"
+else
+	HOST="${HOSTNAME}"
+fi
+COOL="${SUSER}@${HOST}"
+COOLEN="${#COOL}"
+main="\033[1;37m"
+if [ "$ID" == "gentoo" ]; then
+	main="\033[1;35m"
+	ascii=$(cat << 'EOF'
+         \033[1;35m-/oyddmdhs+:.
+     \033[1;35m-o\e[37mdNMMMMMMMMNNmhy+\033[1;35m-`
+   \033[1m-y\033[37mNMMMMMMMMMMMNNNmmdhy\033[1;35m+-
+ \033[1;35m`o\e[37mmMMMMMMMMMMMMNmdmmmmddhh\033[35my/`
+ \033[1;35mom\033[37mMMMMMMMMMMMN\033[35mhhyyyo\033[37mhmdddhhhd\033[35mo`
+\033[1;35m.y\033[37mdMMMMMMMMMMd\033[35mhs++so/s\033[37mmdddhhhhdm\033[35m+`
+ \033[1;35moy\033[37mhdmNMMMMMMMN\033[35mdyooy\033[37mdmddddhhhhyhN\033[35md.
+  \033[1;35m:o\033[37myhhdNNMMMMMMMNNNmmdddhhhhhyym\033[35mMh
+    \033[1;35m.:\033[37m+sydNMMMMMNNNmmmdddhhhhhhmM\033[35mmy
+       \033[1;35m/m\033[37mMMMMMMNNNmmmdddhhhhhmMNh\033[35ms:
+    \033[1;35m`o\033[37mNMMMMMMMNNNmmmddddhhdmMNh\033[35ms+`
+  \033[1;35m`s\033[37mNMMMMMMMMNNNmmmdddddmNMmhs\033[35m/.
+ \033[1;35m/N\033[37mMMMMMMMMNNNNmmmdddmNMNds\033[35mo:`
+\033[1;35m+M\033[37mMMMMMMNNNNNmmmmdmNMNdso\033[35m/-
+\033[1;35myM\033[37mMNNNNNNNmmmmmNNMmhs+/\033[35m-`
+\033[1;35m/h\033[37mMMNNNNNNNNMNdhs++/\033[35m-`
+\033[1;35m`/\033[37mohdmmddhys+++/:\033[35m.`
+  \033[1;35m`-//////:--.\033[0m
+EOF
+)
+elif [ "$ID" == "arch" ]; then
+	main="\033[1;36m"
+	ascii=$(cat << 'EOF'
+\e[1;36m                  -`
+\e[1;36m                 .o+`
+\e[1;36m                `ooo/
+\e[1;36m               `+oooo:
+\e[1;36m              `+oooooo:
+\e[1;36m              -+oooooo+:
+\e[1;36m            `/:-:++oooo+:
+\e[1;36m           `/++++/+++++++:
+\e[1;36m          `/++++++++++++++:
+\e[1;36m         `/+++ooooooooooooo/`
+\e[1;36m        ./ooosssso++osssssso+`
+\e[1;36m       .oossssso-````/ossssss+`
+\e[1;36m      -osssssso.      :ssssssso.
+\e[1;36m     :osssssss/        osssso+++.
+\e[1;36m    /ossssssss/        +ssssooo/-
+\e[1;36m  `/ossssso+/:-        -:/+osssso+-
+\e[1;36m `+sso+:-`                 `.-/+oso:
+\e[1;36m`++:.                           `-/+/
+\e[1;36m.`                                 `/\e[0m
+EOF
+)
+elif [ "$ID" == "ubuntu" ]; then
+	main="\e[1;31m"
+	ascii=$(cat << 'EOF'
+\e[1;31m                             ....
+\e[1;31m              .',:clooo:  .:looooo:.
+\e[1;31m           .;looooooooc  .oooooooooo'
+\e[1;31m        .;looooool:,''.  :ooooooooooc
+\e[1;31m       ;looool;.         'oooooooooo,
+\e[1;31m      ;clool'             .cooooooc.  ,,
+\e[1;31m         ...                ......  .:oo,
+\e[1;31m  .;clol:,.                        .loooo'
+\e[1;31m :ooooooooo,                        'ooool
+\e[1;31m'ooooooooooo.                        loooo.
+\e[1;31m'ooooooooool                         coooo.
+\e[1;31m ,loooooooc.                        .loooo.
+\e[1;31m   .,;;;'.                          ;ooooc
+\e[1;31m       ...                         ,ooool.
+\e[1;31m    .cooooc.              ..',,'.  .cooo.
+\e[1;31m      ;ooooo:.           ;oooooooc.  :l.
+\e[1;31m       .coooooc,..      coooooooooo.
+\e[1;31m         .:ooooooolc:. .ooooooooooo'
+\e[1;31m           .':loooooo;  ,oooooooooc
+\e[1;31m               ..';::c'  .;loooo:'\e[0m
+EOF
+)
+elif [ "$ID" == "debian" ]; then
+	main="\e[1;31m"
+	ascii=$(cat << 'EOF'
+\e[1;37m        _,met$$$$$gg.
+\e[1;37m     ,g$$$$$$$$$$$$$$$P.
+\e[1;37m   ,g$$P""       """Y$$.".
+\e[1;37m  ,$$P'              `$$$.
+\e[1;37m',$$P       ,ggs.     `$$b:
+\e[1;37m`d$$'     ,$P"'   \e[1;31m.\e[1;37m    $$$
+\e[1;37m $$P      d$'     \e[1;31m,\e[1;37m    $$P
+\e[1;37m $$:      $$.   \e[1;31m-\e[1;37m    ,d$$'
+\e[1;37m $$;      Y$b._   _,d$P'
+\e[1;37m Y$$.    \e[1;31m`.\e[1;37m`"Y$$$$P"'
+\e[1;37m `$$b      \e[1;31m"-.__
+\e[1;37m  `Y$$b
+\e[1;37m   `Y$$.
+\e[1;37m     `$$b.
+\e[1;37m       `Y$$b.
+\e[1;37m         `"Y$b._
+\e[1;37m             `""""\e[0m
+EOF
+)
+elif [ "$ID" == "linuxmint" ]; then
+	main="\e[1;32m"
+	ascii=$(cat << 'EOF'
+\e[1;37m            _.-ppOOOOOOqq-._
+\e[1;37m         .oOOOOPPPPPPPPPPOOOOo.
+\e[1;37m      .oOOOO\e[32m.=oOOOOOOOOOOo=.\e[37mOOOOo.
+\e[1;37m    .:OOO\e[32m.=oOOOOOOOOOOOOOOOOo=.\e[37mOOO:.
+\e[1;37m   .OOO\e[32m.OOOOOOOOOOOOOOOOOOOOOOOO.\e[37mOOO.
+\e[1;37m  .OOO\e[32m.OO    OOO:´   `::´    `:OOO.\e[37mOO:
+\e[1;37m .OOO\e[32m.OOO    OO                OOO.\e[37mOOO:
+\e[1;37m OOO\e[32m.OOOO    OO    oo    oo    OOOO.\e[37mOOO
+\e[1;37m:OOO\e[32m:OOOO    OO    OO    OO    OOOO:\e[37mOOO:
+\e[1;37m:OOO\e[32m:OOOO    OO    OO    OO    OOOO:\e[37mOOO:
+\e[1;37m'OOO\e[32m'OOOO    OO    OO    OO    OOOO'\e[37mOOO'
+\e[1;37m OOO\e[32m'OOOO    OO____OO____OO    OOOO'\e[37mOOO'
+\e[1;37m 'OOO\e[32m'OOO    'OOOOOOOOOOOO'    OOOO'\e[37mOOO
+\e[1;37m  'OOO\e[32m'OOO                    .OOO'\e[37mOOO'
+\e[1;37m   'OOO\e[32m'OOOO:ooooooooooooooo:OOOO'\e[37mOOO'
+\e[1;37m    ':OOOo\e[32m'=OOOOOOOOOOOOOOOOO='\e[37moOOO:'
+\e[1;37m      ':OOOOo\e[32m'=OOOOOOOOOOO='\e[37moOOOO:'
+\e[1;37m         ``-OOOOooooooooooOOOO-´´
+\e[1;37m             ```-=:OOOO:=-´´´\e[0m
+EOF
+)
+fi
+COOL="${main}${SUSER}${NC}@${main}${HOST}\033[0m"
+
+color1=""
+color2=""
+for i in {0..7}; do
+    color1+="\e[4${i}m   \e[0m"
+    color2+="\e[10${i}m   \e[0m"
+done
+
+info=$(cat << EOF
+${COOL}
+${NC}-----------
+${main}OS${NC}: ${PRETTY_NAME} ${ARCH}
+${main}Kernel${NC}: $(uname -r)
+${main}Uptime${NC}: $(uptime -p | sed 's/up //')
+${main}Shell${NC}: ${SHELL##*/}
+${main}CPU${NC}: $(awk -F': ' '/model name/ {print $2; exit}' /proc/cpuinfo)
+${main}Memory${NC}: $(free | awk '/Mem:/ {p=($3/$2)*100; c=(p<60?"\033[92m":(p<85?"\033[93m":"\033[91m")); printf "%.1fGiB / %.1fGiB (%s%.0f%%\033[0m)", $3/1024/1024, $2/1024/1024, c, p}')
+
+${color1}
+${color2}
+EOF
+)
+mapfile -t ascii_lines <<< "${ascii}"
+mapfile -t info_lines <<< "${info}"
+
+max_lines=${#ascii_lines[@]}
+if [ ${#info_lines[@]} -gt ${max_lines} ]; then
+    max_lines=${#info_lines[@]}
+fi
+
+max_width=0
+for line in "${ascii_lines[@]}"; do
+    clean_line=$(printf "%b" "$line" | sed 's/\x1b\[[0-9;]*m//g')
+    len=${#clean_line}
+    if (( len > max_width )); then
+        max_width=$len
+    fi
+done
+
+sil=$(( max_width + 4 ))
+
+for ((i=0; i<max_lines; i++)); do
+    printf "%b" "${ascii_lines[i]}"
+    printf "\033[${sil}G%b\n" "${info_lines[i]}"
+done
